@@ -19,7 +19,7 @@ async function main( argv ) {
 		formatversion: 2,
 		errorformat: 'plaintext',
 	}, {
-		userAgent: 'm3api-example/cli-query-titles (https://github.com/lucaswerkmeister/m3api-examples)',
+		userAgent: 'm3api-examples/cli-query-titles (https://github.com/lucaswerkmeister/m3api-examples)',
 	} );
 
 	const params = {};
