@@ -1,0 +1,23 @@
+{
+	"name": "m3api-examples/webapp-clientside-vite-guestbook",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lucaswerkmeister/m3api-examples.git"
+	},
+	"license": "CC0-1.0",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"m3api": "^0.7.3",
+		"m3api-oauth2": "^0.2.0",
+		"vue": "^3.2.47"
+	},
+	"devDependencies": {
+		"@vitejs/plugin-vue": "^4.1.0",
+		"vite": "^4.3.2"
+	}
+}
