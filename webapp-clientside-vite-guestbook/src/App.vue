@@ -93,7 +93,7 @@ function signGuestbook() {
 			}
 			errorHtml.value += ':<ul>';
 			for ( const error of e.errors ) {
-				errorHtml.value += `<li>${e.html}</li>`;
+				errorHtml.value += `<li>${error.html}</li>`;
 			}
 			errorHtml.value += '</ul>';
 		} else {
