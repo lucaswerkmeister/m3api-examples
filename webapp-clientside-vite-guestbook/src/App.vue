@@ -75,7 +75,7 @@ function signGuestbook() {
 	session.request( {
 		action: 'edit',
 		title: 'm3api-examples guestbook',
-		appendtext: '* ~~~~',
+		appendtext: '\n* ~~~~',
 		summary: 'm3api-examples/webapp-clientside-vite-guestbook',
 		bot: true,
 		nocreate: true,
