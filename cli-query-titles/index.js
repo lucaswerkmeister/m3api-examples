@@ -7,7 +7,7 @@ function error( message ) {
 }
 
 async function main( argv ) {
-	const [ _node, _script, endpoint, ...paramArgs ] = process.argv;
+	const [ _node, _script, endpoint, ...paramArgs ] = argv;
 	if ( [ endpoint || '', ...paramArgs ].some( ( arg ) => arg.startsWith( '-' ) ) ) {
 		return error( 'This program does not support any options or flags.' );
 	}
