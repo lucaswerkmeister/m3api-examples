@@ -1,0 +1,14 @@
+{
+	"name": "m3api-examples/cli-download-commons-category",
+	"type": "module",
+	"main": "index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lucaswerkmeister/m3api-examples.git"
+	},
+	"license": "CC0-1.0",
+	"dependencies": {
+		"m3api": "^0.7.3",
+		"m3api-query": "^0.1.1"
+	}
+}
