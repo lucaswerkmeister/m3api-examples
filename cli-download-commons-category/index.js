@@ -4,6 +4,8 @@ import { finished } from 'node:stream/promises';
 import Session, { set } from 'm3api/node.js';
 import { queryFullPages } from 'm3api-query/index.js';
 
+const userAgent = 'm3api-examples/cli-download-commons-category (https://github.com/lucaswerkmeister/m3api-examples)';
+
 function error( message ) {
 	console.error( message );
 	process.exitCode = 1;
@@ -13,7 +15,7 @@ async function downloadFile( session, title ) {
 	const filename = title.slice( 5 );
 	const response = await fetch( `https://commons.wikimedia.org/wiki/Special:FilePath/${filename}`, {
 		headers: {
-			'user-agent': session.getUserAgent(), // note: this is only part of the internal interface
+			'user-agent': userAgent,
 		},
 		redirect: 'follow',
 	} );
@@ -35,7 +37,7 @@ async function main( argv ) {
 		formatversion: 2,
 		errorformat: 'plaintext',
 	}, {
-		userAgent: 'm3api-examples/cli-download-commons-category (https://github.com/lucaswerkmeister/m3api-examples)',
+		userAgent,
 	} );
 	for ( let category of categories ) {
 		if ( !category.startsWith( 'Category:' ) ) {
