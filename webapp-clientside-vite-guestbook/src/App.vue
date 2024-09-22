@@ -23,7 +23,7 @@ const session = new Session( 'test.wikipedia.org', {
 	formatversion: 2,
 	errorformat: 'html',
 	assert: 'user',
-	origin: '*',
+	crossorigin: true,
 }, {
 	userAgent: 'm3api-examples/webapp-clientside-vite-guestbook (https://github.com/lucaswerkmeister/m3api-examples)',
 	'm3api-oauth2/client': new OAuthClient(
