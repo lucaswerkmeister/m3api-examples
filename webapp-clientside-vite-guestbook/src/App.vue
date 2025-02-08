@@ -113,7 +113,7 @@ function signGuestbook() {
 			This is the client-side / Vite edition of the “guestbook” example web app.
 		</p>
 		<p v-if="state === STATE_BLANK">
-			Please stand by why the authorization is being initialized.
+			Please stand by while the authorization is being initialized.
 		</p>
 		<p v-else-if="state === STATE_INITED">
 			<a :href="authorizationUrl">Log in</a> to get started.
