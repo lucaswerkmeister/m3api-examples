@@ -42,7 +42,7 @@ if ( ( new URLSearchParams( location.search ) ).has( 'code' ) ) {
 		.then( () => {
 			sessionStorage.setItem( 'oauth-session',
 				JSON.stringify( serializeOAuthSession( session ) ) );
-			state.value = STATE_COMPLETED;
+			location = `${location.origin}/`; // clear URL params after processing
 		} )
 		.catch( ( e ) => {
 			errorHtml.value = 'Error while completing OAuth session!';
