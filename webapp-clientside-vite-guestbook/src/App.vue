@@ -14,9 +14,11 @@ const STATE_BLANK = 0,
 	STATE_COMPLETING = 2,
 	STATE_COMPLETED = 3,
 	STATE_SIGNING = 4,
-	STATE_FATAL = 5;
+	STATE_SIGNED = 5,
+	STATE_FATAL = 6;
 const state = ref( STATE_BLANK );
 const authorizationUrl = ref( null );
+const signatureRevisionId = ref( null );
 const errorHtml = ref( null );
 
 const session = new Session( 'test.wikipedia.org', {
@@ -83,8 +85,9 @@ function signGuestbook() {
 	}, {
 		method: 'POST',
 		tokenType: 'csrf',
-	} ).then( () => {
-		state.value = STATE_COMPLETED;
+	} ).then( ( { edit } ) => {
+		signatureRevisionId.value = edit.newrevid;
+		state.value = STATE_SIGNED;
 	} ).catch( ( e ) => {
 		if ( e instanceof ApiErrors ) {
 			errorHtml.value = 'API error';
@@ -128,6 +131,9 @@ function signGuestbook() {
 		</p>
 		<p v-else-if="state === STATE_SIGNING">
 			Signing guestbook…
+		</p>
+		<p v-else-if="state === STATE_SIGNED">
+			Guestbook signed! You can review <a :href="'https://test.wikipedia.org/w/index.php?diff=' + signatureRevisionId">the edit</a> or reload the page to start over.
 		</p>
 		<p v-else-if="state !== STATE_FATAL">
 			Unexpected state {{ state }}!
