@@ -7,12 +7,12 @@ function error( message ) {
 }
 
 async function main( argv ) {
-	const [ _node, _script, endpoint, ...paramArgs ] = argv;
+	const [ node, script, endpoint, ...paramArgs ] = argv;
 	if ( [ endpoint || '', ...paramArgs ].some( ( arg ) => arg.startsWith( '-' ) ) ) {
 		return error( 'This program does not support any options or flags.' );
 	}
 	if ( !endpoint || !paramArgs.length || !endpoint.includes( '.' ) ) {
-		return error( 'Usage: node index.js en.wikipedia.org generator=categorymembers gcmtitle=Category:MediaWiki' );
+		return error( `Usage: ${node} ${script} en.wikipedia.org generator=categorymembers gcmtitle=Category:MediaWiki` );
 	}
 
 	const session = new Session( endpoint, {
