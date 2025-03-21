@@ -1,18 +1,19 @@
 #!/usr/bin/env node
 import app from '../app.js';
-import http from 'http';
+import { createServer } from 'http';
 
 const port = 8080; // required by OAuth client
-app.set('port', port);
+app.set( 'port', port );
 
-var server = http.createServer(app);
-server.listen(port);
-server.on('error', (error) => {
-	if (error.syscall === 'listen' && error.code === 'EADDRINUSE') {
-		console.error(`Port ${port} is already in use`);
-		process.exit(1);
+const server = createServer( app );
+server.listen( port );
+server.on( 'error', ( error ) => {
+	if ( error.syscall === 'listen' && error.code === 'EADDRINUSE' ) {
+		console.error( `Port ${port} is already in use` );
+		process.exit( 1 );
 	} else {
 		throw error;
 	}
-});
-server.on('listening', () => console.log(`Listening on http://localhost:${port}`));
+} );
+server.on( 'listening',
+	() => console.log( `Listening on http://localhost:${port}` ) );
