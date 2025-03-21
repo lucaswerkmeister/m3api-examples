@@ -1,6 +1,5 @@
 {
 	"name": "m3api-examples/webapp-serverside-express-guestbook",
-	"type": "module",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/lucaswerkmeister/m3api-examples.git"
