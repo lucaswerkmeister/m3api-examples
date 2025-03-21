@@ -1,0 +1,22 @@
+{
+	"name": "m3api-examples/webapp-serverside-express-guestbook",
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/lucaswerkmeister/m3api-examples.git"
+	},
+	"license": "CC0-1.0",
+	"scripts": {
+		"start": "node ./bin/www"
+	},
+	"dependencies": {
+		"csrf": "^3.1.0",
+		"express": "^5.0.1",
+		"express-session": "^1.18.1",
+		"hbs": "^4.2.0",
+		"http-errors": "^2.0.0",
+		"m3api": "^0.8.4",
+		"m3api-oauth2": "^0.3.3",
+		"morgan": "^1.10.0"
+	}
+}
