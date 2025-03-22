@@ -14,7 +14,7 @@ const basePath = dirname( fileURLToPath( import.meta.url ) );
 
 // view engine setup
 app.set( 'views', join( basePath, 'views' ) );
-app.set( 'view engine', 'pug' );
+app.set( 'view engine', 'hbs' );
 
 app.use( logger( 'dev' ) );
 app.use( express.json() );
