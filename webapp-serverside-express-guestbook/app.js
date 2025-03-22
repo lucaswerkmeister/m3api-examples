@@ -6,7 +6,6 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
 import indexRouter from './routes/index.js';
-import usersRouter from './routes/users.js';
 
 const app = express();
 
@@ -23,7 +22,6 @@ app.use( cookieParser() );
 app.use( express.static( join( basePath, 'public' ) ) );
 
 app.use( '/', indexRouter );
-app.use( '/users', usersRouter );
 
 // catch 404 and forward to error handler
 app.use( function( req, res, next ) {
