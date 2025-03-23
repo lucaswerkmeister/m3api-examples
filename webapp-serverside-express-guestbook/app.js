@@ -1,10 +1,11 @@
 import createError from 'http-errors';
 import express from 'express';
+import session from 'express-session';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
+import tokens from './tokens.js';
 import indexRouter from './routes/index.js';
 
 const app = express();
@@ -18,8 +19,29 @@ app.set( 'view engine', 'hbs' );
 app.use( logger( 'dev' ) );
 app.use( express.json() );
 app.use( express.urlencoded( { extended: false } ) );
-app.use( cookieParser() );
 app.use( express.static( join( basePath, 'public' ) ) );
+app.use( session( {
+	name: 'm3api-examples-webapp-serverside-express-guestbook',
+	resave: false,
+	saveUninitialized: false,
+	secret: '410b326a-f364-4564-9a47-5260f459b9cc', // note: in a real app, this should come from secret configuration, not be hard-coded as part of the public source code
+} ) );
+app.use( async ( req, res, next ) => {
+	console.log( 'csrf middleware' );
+	if ( !req.session.csrfSecret ) {
+		req.session.csrfSecret = await tokens.secret();
+		console.log( 'created csrf secret' );
+	}
+	if ( req.method !== 'GET' && req.method !== 'HEAD' ) {
+		console.log( 'non-idempotent request', req.body );
+		if ( !tokens.verify( req.session.csrfSecret, req.body.csrfToken ) ) {
+			console.log( `csrf error: got ${req.body.csrfToken}` );
+			return next( createError( 503 ) );
+		}
+	}
+	console.log( 'csrf middleware done' );
+	return next();
+} );
 
 app.use( '/', indexRouter );
 
