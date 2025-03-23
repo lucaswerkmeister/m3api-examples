@@ -27,19 +27,14 @@ app.use( session( {
 	secret: '410b326a-f364-4564-9a47-5260f459b9cc', // note: in a real app, this should come from secret configuration, not be hard-coded as part of the public source code
 } ) );
 app.use( async ( req, res, next ) => {
-	console.log( 'csrf middleware' );
 	if ( !req.session.csrfSecret ) {
 		req.session.csrfSecret = await tokens.secret();
-		console.log( 'created csrf secret' );
 	}
 	if ( req.method !== 'GET' && req.method !== 'HEAD' ) {
-		console.log( 'non-idempotent request', req.body );
 		if ( !tokens.verify( req.session.csrfSecret, req.body.csrfToken ) ) {
-			console.log( `csrf error: got ${req.body.csrfToken}` );
 			return next( createError( 503 ) );
 		}
 	}
-	console.log( 'csrf middleware done' );
 	return next();
 } );
 
