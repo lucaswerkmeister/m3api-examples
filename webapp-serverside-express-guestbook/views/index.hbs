@@ -1,2 +1,8 @@
-<p>Some more guestbook HTML will go here.</p>
-<form method=post><input type="hidden" name="csrfToken" value="{{ csrfToken }}"><button type="submit">Submit</button></form>
+<form action="/sign" method="post">
+	<input type="hidden" name="csrfToken" value="{{ csrfToken }}">
+	<p>
+		Click here to add yourself to the
+		<a href="https://test.wikipedia.org/wiki/M3api-examples_guestbook">guestbook</a>:
+		<button type="submit">Sign guestbook</button>
+	</p>
+</form>

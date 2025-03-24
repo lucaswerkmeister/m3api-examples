@@ -24,7 +24,8 @@ app.use( session( {
 	name: 'm3api-examples-webapp-serverside-express-guestbook',
 	resave: false,
 	saveUninitialized: false,
-	secret: '410b326a-f364-4564-9a47-5260f459b9cc', // note: in a real app, this should come from secret configuration, not be hard-coded as part of the public source code
+	// note: in a real app, this should come from secret configuration, not be hard-coded as part of the public source code
+	secret: '410b326a-f364-4564-9a47-5260f459b9cc',
 } ) );
 app.use( async ( req, res, next ) => {
 	if ( !req.session.csrfSecret ) {
@@ -45,15 +46,23 @@ app.use( function( req, res, next ) {
 	next( createError( 404 ) );
 } );
 
+// only for tag contents, not for attributes
+const escapeHtml = ( s ) => String( s ).replace( /[<&]/g, ( c ) => ( {
+	'<': '&lt;',
+	'&': '&amp;',
+}[ c ] ) );
+
 // error handler
 app.use( function( err, req, res, next ) {
 	// set locals, only providing error in development
-	res.locals.message = err.message;
-	res.locals.error = req.app.get( 'env' ) === 'development' ? err : {};
+	res.locals.error = escapeHtml( err.message );
+	if ( req.app.get( 'env' ) === 'development' ) {
+		res.locals.error += `<h2>${ escapeHtml( err.status ) }</h2><pre>${ escapeHtml( err.stack ) }</pre>`;
+	}
 
 	// render the error page
 	res.status( err.status || 500 );
-	res.render( 'error' );
+	res.render( 'layout' );
 } );
 
 export default app;
