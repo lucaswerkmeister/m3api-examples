@@ -33,7 +33,7 @@ app.use( async ( req, res, next ) => {
 	}
 	if ( req.method !== 'GET' && req.method !== 'HEAD' ) {
 		if ( !tokens.verify( req.session.csrfSecret, req.body.csrfToken ) ) {
-			return next( createError( 503 ) );
+			return next( createError( 403 ) );
 		}
 	}
 	return next();
