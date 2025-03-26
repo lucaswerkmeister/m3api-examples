@@ -69,27 +69,22 @@ router.post( '/sign', async function ( req, res, next ) {
 		return next( createError( 403 ) );
 	}
 
-	try {
-		const { edit } = await session.request( {
-			action: 'edit',
-			title: 'm3api-examples guestbook',
-			appendtext: '\n* ~~~~',
-			summary: 'm3api-examples/webapp-serverside-express-guestbook',
-			bot: true,
-			nocreate: true,
-			watchlist: 'nochange',
-		}, {
-			method: 'POST',
-			tokenType: 'csrf',
-		} );
-		res.render( 'signed', {
-			title,
-			signatureRevisionId: edit.newrevid,
-		} );
-	} catch ( e ) {
-		// in Express 4, we need to catch async errors ourselves; Express 5 does this automatically
-		next( e );
-	}
+	const { edit } = await session.request( {
+		action: 'edit',
+		title: 'm3api-examples guestbook',
+		appendtext: '\n* ~~~~',
+		summary: 'm3api-examples/webapp-serverside-express-guestbook',
+		bot: true,
+		nocreate: true,
+		watchlist: 'nochange',
+	}, {
+		method: 'POST',
+		tokenType: 'csrf',
+	} );
+	res.render( 'signed', {
+		title,
+		signatureRevisionId: edit.newrevid,
+	} );
 } );
 
 export default router;
