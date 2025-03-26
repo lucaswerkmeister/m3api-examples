@@ -19,7 +19,6 @@ const makeSession = () => new Session( 'test.wikipedia.org', {
 	errorformat: 'html',
 	assert: 'user',
 	crossorigin: true,
-	maxlag: -1,
 }, {
 	userAgent: 'm3api-examples/webapp-serverside-express-guestbook (https://github.com/lucaswerkmeister/m3api-examples)',
 	'm3api-oauth2/client': new OAuthClient(
