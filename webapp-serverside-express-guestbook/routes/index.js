@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import createError from 'http-errors';
 import Session, {
 	ApiErrors,
 } from 'm3api';
@@ -7,6 +8,7 @@ import {
 	completeOAuthSession,
 	deserializeOAuthSession,
 	initOAuthSession,
+	isCompleteOAuthSession,
 	serializeOAuthSession,
 } from 'm3api-oauth2';
 import tokens from '../tokens.js';
@@ -33,6 +35,7 @@ router.get( '/', async function( req, res, next ) {
 	if ( 'oauthSession' in req.session ) {
 		deserializeOAuthSession( session, req.session.oauthSession );
 	}
+
 	if ( 'code' in req.query ) {
 		// this is the OAuth callback
 		// note: in a real app, this would be a separate route (e.g. /oauth/callback);
@@ -42,7 +45,8 @@ router.get( '/', async function( req, res, next ) {
 		res.redirect( 303, '/' );
 		return;
 	}
-	if ( !( 'oauthSession' in req.session ) ) { // <-- this would become isOAuthComplete( session )
+
+	if ( !isCompleteOAuthSession( session ) ) {
 		const authorizationUrl = await initOAuthSession( session );
 		req.session.oauthSession = serializeOAuthSession( session );
 		res.render( 'login', {
@@ -51,26 +55,7 @@ router.get( '/', async function( req, res, next ) {
 		} );
 		return;
 	}
-	// TODO just because req.session.oauthSession was *set* doesn’t mean it was *completed*…
-	// m3api-oauth2 should expose some way for us to determine between three states:
-	// * uninitialized (req.session.oauthSession absent or empty)
-	// * initialized but not completed (req.session.oauthSession has codeVerifier but no accessToken)
-	// * completed (req.session.oauthSession has accessToken; presence of refreshToken probably irrelevant?)
-	// without us inspecting the opaque serialization directly
-	// ---
-	// actually… what are we supposed to do if it’s initialized but not completed?
-	// m3api-oauth2 doesn’t currently give us a way to get the authorizationUrl again –
-	// if we init a second time, it’ll regenerate the code verifier and thus invalidate the old URL.
-	// maybe init should be idempotent (reuse verifier if already set)?
-	// or should there be a separate “get authorization URL for inited session” function?
-	// ---
-	// if we make init idempotent, then we just need a single “is complete [return boolean]” function.
-	// I think I might prefer that to the weird tristate thing above.
-	// (“is inited” on its own, without access to the URL, is useless;
-	// if anyone really wants to know if it’s already inited from m3api-oauth2’s point of view,
-	// they can save the URL themselves, call init, and check if the URL is the same or not (assuming idempotent init).
-	// if it isn’t the same, then the old URL they saved was useless anyway because m3api-oauth2 no longer had the corresponding codeVerifier.)
-	// at least some of these fixes also apply to the client-side example btw :3 we likewise reuse serialization === null as the “needs init” condition there, should be !isOAuthComplete() instead
+
 	res.render( 'index', {
 		title,
 		csrfToken: tokens.create( req.session.csrfSecret ),
@@ -78,10 +63,13 @@ router.get( '/', async function( req, res, next ) {
 } );
 
 router.post( '/sign', async function ( req, res, next ) {
-	// TODO we need to know if the session is actually in completed state… see TODO above
-	// if !isOAuthComplete( session ) then return 403
 	const session = makeSession();
 	deserializeOAuthSession( session, req.session.oauthSession );
+
+	if ( !isCompleteOAuthSession( session ) ) {
+		return next( createError( 403 ) );
+	}
+
 	try {
 		const { edit } = await session.request( {
 			action: 'edit',
