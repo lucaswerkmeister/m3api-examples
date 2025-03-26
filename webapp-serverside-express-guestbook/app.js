@@ -46,23 +46,15 @@ app.use( function( req, res, next ) {
 	next( createError( 404 ) );
 } );
 
-// only for tag contents, not for attributes
-const escapeHtml = ( s ) => String( s ).replace( /[<&]/g, ( c ) => ( {
-	'<': '&lt;',
-	'&': '&amp;',
-}[ c ] ) );
-
 // error handler
 app.use( function( err, req, res, next ) {
 	// set locals, only providing error in development
-	res.locals.error = escapeHtml( err.message );
-	if ( req.app.get( 'env' ) === 'development' ) {
-		res.locals.error += `<h2>${ escapeHtml( err.status ) }</h2><pre>${ escapeHtml( err.stack ) }</pre>`;
-	}
+	res.locals.message = err.message;
+	res.locals.error = req.app.get( 'env' ) === 'development' ? err : {};
 
 	// render the error page
 	res.status( err.status || 500 );
-	res.render( 'layout' );
+	res.render( 'error' );
 } );
 
 export default app;

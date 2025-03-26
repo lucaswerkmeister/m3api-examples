@@ -88,25 +88,30 @@ router.post( '/sign', async function ( req, res, next ) {
 			signatureRevisionId: edit.newrevid,
 		} );
 	} catch ( e ) {
-		let errorHtml;
 		if ( e instanceof ApiErrors ) {
-			errorHtml = 'API error';
+			let heading = 'API error';
+			let errorHtml = '<p>The API returned the following error';
 			if ( e.errors.length > 1 ) {
+				heading += 's';
 				errorHtml += 's';
 			}
-			errorHtml += ':<ul>';
+			errorHtml += ':</p><ul>';
 			for ( const error of e.errors ) {
 				errorHtml += `<li>${error.html}</li>`;
 			}
 			errorHtml += '</ul>';
+			res.render( 'api-errors', {
+				title,
+				heading,
+				errorHtml,
+			} );
 		} else {
-			errorHtml = 'Unexpected API error!';
-			console.error( e );
+			res.render( 'error', {
+				title,
+				message: e.message,
+				error: req.app.get( 'env' ) === 'development' ? e : {},
+			} );
 		}
-		res.render( 'layout', {
-			title,
-			error,
-		} );
 	}
 } );
 
