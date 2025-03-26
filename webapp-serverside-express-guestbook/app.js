@@ -28,6 +28,7 @@ app.use( session( {
 	saveUninitialized: false,
 	// note: in a real app, this should come from secret configuration, not be hard-coded as part of the public source code
 	secret: '410b326a-f364-4564-9a47-5260f459b9cc',
+	// note: a real app would also configure a `store` here; for this example, the default MemoryStore is sufficient
 } ) );
 
 // simple token-based CSRF middleware (expects <input type=hidden name=csrfToken> data in POST requests)
