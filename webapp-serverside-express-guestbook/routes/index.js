@@ -24,7 +24,7 @@ router.get( '/', async function( req, res, next ) {
 		// the OAuth client used by this example uses / as the callback because it’s also used by the client-side app
 		await completeOAuthSession( session, req.originalUrl );
 		saveSession( req, session );
-		res.redirect( 303, '/' );
+		res.redirect( 303, `${ req.baseUrl }/` );
 		return;
 	}
 
