@@ -29,6 +29,8 @@ app.use( session( {
 	// note: in a real app, this should come from secret configuration, not be hard-coded as part of the public source code
 	secret: '410b326a-f364-4564-9a47-5260f459b9cc',
 } ) );
+
+// simple token-based CSRF middleware (expects <input type=hidden name=csrfToken> data in POST requests)
 app.use( async ( req, res, next ) => {
 	if ( !req.session.csrfSecret ) {
 		req.session.csrfSecret = await tokens.secret();
