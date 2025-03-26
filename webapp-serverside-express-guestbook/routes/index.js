@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import createError from 'http-errors';
-import Session, {
-	ApiErrors,
-} from 'm3api';
+import Session from 'm3api';
 import {
 	OAuthClient,
 	completeOAuthSession,
@@ -21,6 +19,7 @@ const makeSession = () => new Session( 'test.wikipedia.org', {
 	errorformat: 'html',
 	assert: 'user',
 	crossorigin: true,
+	maxlag: -1,
 }, {
 	userAgent: 'm3api-examples/webapp-serverside-express-guestbook (https://github.com/lucaswerkmeister/m3api-examples)',
 	'm3api-oauth2/client': new OAuthClient(
@@ -88,30 +87,8 @@ router.post( '/sign', async function ( req, res, next ) {
 			signatureRevisionId: edit.newrevid,
 		} );
 	} catch ( e ) {
-		if ( e instanceof ApiErrors ) {
-			let heading = 'API error';
-			let errorHtml = '<p>The API returned the following error';
-			if ( e.errors.length > 1 ) {
-				heading += 's';
-				errorHtml += 's';
-			}
-			errorHtml += ':</p><ul>';
-			for ( const error of e.errors ) {
-				errorHtml += `<li>${error.html}</li>`;
-			}
-			errorHtml += '</ul>';
-			res.render( 'api-errors', {
-				title,
-				heading,
-				errorHtml,
-			} );
-		} else {
-			res.render( 'error', {
-				title,
-				message: e.message,
-				error: req.app.get( 'env' ) === 'development' ? e : {},
-			} );
-		}
+		// in Express 4, we need to catch async errors ourselves; Express 5 does this automatically
+		next( e );
 	}
 } );
 

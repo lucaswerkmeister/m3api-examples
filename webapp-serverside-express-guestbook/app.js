@@ -4,6 +4,9 @@ import session from 'express-session';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import logger from 'morgan';
+import {
+	ApiErrors,
+} from 'm3api';
 
 import tokens from './tokens.js';
 import indexRouter from './routes/index.js';
@@ -49,10 +52,31 @@ app.use( function( req, res, next ) {
 // error handler
 app.use( function( err, req, res, next ) {
 	res.status( err.status || 500 );
-	res.render( 'error', {
-		message: err.message,
-		error: req.app.get( 'env' ) === 'development' ? err : {},
-	} );
+	const title = 'Error';
+	if ( err instanceof ApiErrors ) {
+		let heading = 'API error';
+		let errorHtml = '<p>The API returned the following error';
+		if ( err.errors.length > 1 ) {
+			heading += 's';
+			errorHtml += 's';
+		}
+		errorHtml += ':</p><ul>';
+		for ( const error of err.errors ) {
+			errorHtml += `<li>${error.html}</li>`;
+		}
+		errorHtml += '</ul>';
+		res.render( 'api-errors', {
+			title,
+			heading,
+			errorHtml,
+		} );
+	} else {
+		res.render( 'error', {
+			title,
+			message: err.message,
+			error: req.app.get( 'env' ) === 'development' ? err : {},
+		} );
+	}
 } );
 
 export default app;
