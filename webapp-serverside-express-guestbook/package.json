@@ -16,7 +16,7 @@
 		"hbs": "^4.2.0",
 		"http-errors": "^2.0.0",
 		"m3api": "^0.8.4",
-		"m3api-oauth2": "github:lucaswerkmeister/m3api-oauth2#2abf7c955e",
+		"m3api-oauth2": "^0.3.3",
 		"morgan": "^1.10.0"
 	}
 }
