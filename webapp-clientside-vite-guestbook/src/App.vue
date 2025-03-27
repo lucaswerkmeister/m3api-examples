@@ -5,6 +5,7 @@ import {
 	completeOAuthSession,
 	deserializeOAuthSession,
 	initOAuthSession,
+	isCompleteOAuthSession,
 	serializeOAuthSession,
 } from 'm3api-oauth2';
 import { ref } from 'vue';
@@ -51,7 +52,9 @@ if ( ( new URLSearchParams( location.search ) ).has( 'code' ) ) {
 			state.value = STATE_FATAL;
 			console.error( e );
 		} );
-} else if ( serialization === null ) {
+}
+
+if ( !isCompleteOAuthSession( session ) ) {
 	initOAuthSession( session )
 		.then( ( url ) => {
 			sessionStorage.setItem( 'oauth-session',
