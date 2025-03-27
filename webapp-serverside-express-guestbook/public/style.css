@@ -1,0 +1,8 @@
+body {
+	margin: 48px; /* Codex spacing-300 */
+	font-family: sans-serif; /* Codex font-family-base */
+}
+
+h1, h2 {
+	font-family: 'Linux Libertine', 'Georgia', 'Times', 'Source Serif Pro', serif; /* Codex font-family-serif */
+}
