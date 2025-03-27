@@ -1,12 +1,10 @@
-import createError from 'http-errors';
-import express from 'express';
-import session from 'express-session';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import express from 'express';
+import session from 'express-session';
+import createError from 'http-errors';
+import { ApiErrors } from 'm3api';
 import logger from 'morgan';
-import {
-	ApiErrors,
-} from 'm3api';
 
 import tokens from './tokens.js';
 import indexRouter from './routes/index.js';
