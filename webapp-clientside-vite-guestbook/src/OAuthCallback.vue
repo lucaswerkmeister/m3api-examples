@@ -33,8 +33,5 @@ completeOAuthSession( session, location.href )
 </template>
 
 <style>
-.error {
-	background: #fee7e6;
-	border: 1px solid #b32424;
-}
+@import './error.css';
 </style>
