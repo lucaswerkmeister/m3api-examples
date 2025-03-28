@@ -24,7 +24,9 @@ const signatureRevisionId = ref( null );
 const errorHtml = ref( null );
 
 const session = loadSession();
-if ( !isCompleteOAuthSession( session ) ) {
+if ( isCompleteOAuthSession( session ) ) {
+	state.value = STATE_COMPLETED;
+} else {
 	initOAuthSession( session )
 		.then( ( url ) => {
 			saveSession( session );
@@ -36,8 +38,6 @@ if ( !isCompleteOAuthSession( session ) ) {
 			state.value = STATE_FATAL;
 			console.error( e );
 		} );
-} else {
-	state.value = STATE_COMPLETED;
 }
 
 function signGuestbook() {
