@@ -35,7 +35,25 @@ as this is included in the OAuth callback URL of the OAuth consumer / client use
 If you want to run this example somewhere else,
 you can register your own OAuth consumer and put its credentials in `src/App.vue`.
 
+## A note on the OAuth client
+
+The OAuth client (ID + secret) used by this example is hard-coded in `src/session.js`,
+and is thus public in two ways:
+it’s included in the source code distributed as part of the m3api-examples repository,
+and it’s also included in the code that’s sent to the browser and executed there
+(whether you use the development mode or create a build and serve that statically).
+The latter part is a necessary consequence of running the app client-side –
+in theory, anyone can extract the OAuth client and use it on their own.
+For this reason, the client is marked as **non-confidential**
+(visible e.g. on [the client’s page][OAuth client]);
+if you create your own OAuth client for a client-side (in-browser) app,
+you should do the same (i.e., uncheck the “Client is confidential” checkbox).
+If you want to prevent others from reusing the OAuth client and impersonating your app,
+you will need a server-side component that can keep the client secret confidential:
+see e.g. the [server-side example](../webapp-serverside-express-guestbook/) also included in this repository.
+
 [m3api]: https://www.npmjs.com/package/m3api
 [m3api-oauth2]: https://www.npmjs.com/package/m3api-oauth2
 [Vite]: https://vite.dev/
 [m3api-examples guestbook]: https://test.wikipedia.org/wiki/M3api-examples_guestbook
+[OAuth client]: https://meta.wikimedia.org/wiki/Special:OAuthListConsumers/view/3176b30484225b3b594b2a3074b01aff

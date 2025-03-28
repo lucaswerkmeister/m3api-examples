@@ -22,6 +22,22 @@ when you return to the page, click the “sign guestbook” button.
 If you then follow the link on the page to the guestbook,
 you should see a new edit there with your signature.
 
+## A note on the OAuth client
+
+The OAuth client (ID + secret) used by this example is hard-coded in `session.js` –
+it’s the same one as in the [client-side example](../webapp-clientside-vite-guestbook/),
+and marked non-confidential for the reasons explained there.
+However, a real app should not hard-code the client credentials in this way.
+Instead, it should load the credentials from some kind of secret source
+(configuration file, environment variables, etc.),
+so that the code can be published while the OAuth client secret is kept confidential.
+If you do this, then you can mark your OAuth client as confidential when requesting it
+(this is also the default setting – just keep the “Client is confidential” checkbox checked).
+The only reason this example doesn’t do that is that the example should be immediately usable,
+without having to first register an OAuth client to try it out with,
+and so by necessity the example needs to ship a non-confidential client.
+You should not follow this particular practice.
+
 [m3api]: https://www.npmjs.com/package/m3api
 [m3api-oauth2]: https://www.npmjs.com/package/m3api-oauth2
 [Express]: https://expressjs.com/
