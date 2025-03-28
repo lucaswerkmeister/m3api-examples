@@ -1,64 +1,33 @@
 <script setup>
-import Session, { ApiErrors } from 'm3api/browser.js';
+import { ApiErrors } from 'm3api/browser.js';
 import {
-	OAuthClient,
 	completeOAuthSession,
-	deserializeOAuthSession,
 	initOAuthSession,
 	isCompleteOAuthSession,
-	serializeOAuthSession,
 } from 'm3api-oauth2';
 import { ref } from 'vue';
 
+import {
+	loadSession,
+	saveSession,
+} from './session.js';
+
 const STATE_BLANK = 0,
 	STATE_INITED = 1,
-	STATE_COMPLETING = 2,
-	STATE_COMPLETED = 3,
-	STATE_SIGNING = 4,
-	STATE_SIGNED = 5,
-	STATE_FATAL = 6;
+	STATE_COMPLETED = 2,
+	STATE_SIGNING = 3,
+	STATE_SIGNED = 4,
+	STATE_FATAL = 5;
 const state = ref( STATE_BLANK );
 const authorizationUrl = ref( null );
 const signatureRevisionId = ref( null );
 const errorHtml = ref( null );
 
-const session = new Session( 'test.wikipedia.org', {
-	formatversion: 2,
-	errorformat: 'html',
-	assert: 'user',
-	crossorigin: true,
-}, {
-	userAgent: 'm3api-examples/webapp-clientside-vite-guestbook (https://github.com/lucaswerkmeister/m3api-examples)',
-	'm3api-oauth2/client': new OAuthClient(
-		'bd42efa5d63ec102843072f4837d4b51',
-		'aff3fb291397d820f4d40e098ff65e907e017847'
-	),
-} );
-const serialization = sessionStorage.getItem( 'oauth-session' );
-if( serialization !== null ) {
-	deserializeOAuthSession( session, JSON.parse( serialization ) );
-}
-
-if ( ( new URLSearchParams( location.search ) ).has( 'code' ) ) {
-	state.value = STATE_COMPLETING;
-	completeOAuthSession( session, location.href )
-		.then( () => {
-			sessionStorage.setItem( 'oauth-session',
-				JSON.stringify( serializeOAuthSession( session ) ) );
-			location = `${location.origin}/`; // clear URL params after processing
-		} )
-		.catch( ( e ) => {
-			errorHtml.value = 'Error while completing OAuth session!';
-			state.value = STATE_FATAL;
-			console.error( e );
-		} );
-}
-
+const session = loadSession();
 if ( !isCompleteOAuthSession( session ) ) {
 	initOAuthSession( session )
 		.then( ( url ) => {
-			sessionStorage.setItem( 'oauth-session',
-				JSON.stringify( serializeOAuthSession( session ) ) );
+			saveSession( session );
 			authorizationUrl.value = url;
 			state.value = STATE_INITED;
 		} )
