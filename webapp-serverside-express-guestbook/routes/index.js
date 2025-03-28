@@ -18,16 +18,6 @@ const title = 'Guestbook web app (server-side / Express.js edition)';
 router.get( '/', async function( req, res, next ) {
 	const session = loadSession( req );
 
-	if ( 'code' in req.query ) {
-		// this is the OAuth callback
-		// note: in a real app, this would be a separate route (e.g. /oauth/callback);
-		// the OAuth client used by this example uses / as the callback because it’s also used by the client-side app
-		await completeOAuthSession( session, req.originalUrl );
-		saveSession( req, session );
-		res.redirect( 303, `${ req.baseUrl }/` );
-		return;
-	}
-
 	if ( !isCompleteOAuthSession( session ) ) {
 		const authorizationUrl = await initOAuthSession( session );
 		saveSession( req, session );
@@ -42,6 +32,13 @@ router.get( '/', async function( req, res, next ) {
 		title,
 		csrfToken: tokens.create( req.session.csrfSecret ),
 	} );
+} );
+
+router.get( '/oauth-callback/', async function ( req, res, next ) {
+	const session = loadSession( req );
+	await completeOAuthSession( session, req.originalUrl );
+	saveSession( req, session );
+	res.redirect( 303, `${ req.baseUrl }/` );
 } );
 
 router.post( '/sign', async function ( req, res, next ) {

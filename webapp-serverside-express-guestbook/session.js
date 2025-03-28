@@ -21,8 +21,8 @@ export function loadSession( req ) {
 		userAgent: 'm3api-examples/webapp-serverside-express-guestbook (https://github.com/lucaswerkmeister/m3api-examples)',
 		'm3api-oauth2/client': new OAuthClient(
 			// note: in a real app, this should come from secret configuration, not be hard-coded as part of the public source code
-			'bd42efa5d63ec102843072f4837d4b51',
-			'aff3fb291397d820f4d40e098ff65e907e017847'
+			'3176b30484225b3b594b2a3074b01aff',
+			'503c5a6b247016bf30169c3cf8663be9f1b001ae'
 		),
 	} );
 
