@@ -33,7 +33,7 @@ npm run build
 Note that you need to use port 8080 (and `localhost`),
 as this is included in the OAuth callback URL of the OAuth consumer / client used by this example.
 If you want to run this example somewhere else,
-you can register your own OAuth consumer and put its credentials in `src/App.vue`.
+you can register your own OAuth consumer and put its credentials in `src/session.js`.
 
 ## A note on the OAuth client
 
