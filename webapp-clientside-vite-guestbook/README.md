@@ -5,7 +5,7 @@ The application lets the user log in using OAuth
 and then add themselves to the [m3api-examples guestbook][] on Test Wikipedia.
 The authentication and the edit are all done client-side, i.e. in the browser:
 nothing happens on the server side,
-and you could deploy the app as a set of static files.
+and it’s possible to deploy the app as a set of static files.
 
 ## Usage
 
