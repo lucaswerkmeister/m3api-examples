@@ -12,8 +12,8 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"m3api": "^0.8.4",
-		"m3api-oauth2": "^0.3.3",
+		"m3api": "^1.0.0",
+		"m3api-oauth2": "^1.0.0",
 		"vue": "^3.2.47"
 	},
 	"devDependencies": {
