@@ -14,10 +14,10 @@
 	"dependencies": {
 		"m3api": "^1.0.0",
 		"m3api-oauth2": "^1.0.0",
-		"vue": "^3.2.47"
+		"vue": "^3.5.13"
 	},
 	"devDependencies": {
-		"@vitejs/plugin-vue": "^4.1.0",
-		"vite": "^4.3.2"
+		"@vitejs/plugin-vue": "^5.2.3",
+		"vite": "^6.2.6"
 	}
 }
