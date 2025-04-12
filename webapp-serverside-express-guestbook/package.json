@@ -15,8 +15,8 @@
 		"express-session": "^1.18.1",
 		"hbs": "^4.2.0",
 		"http-errors": "^2.0.0",
-		"m3api": "^0.8.4",
-		"m3api-oauth2": "^0.3.3",
+		"m3api": "^1.0.0",
+		"m3api-oauth2": "^1.0.0",
 		"morgan": "^1.10.0"
 	}
 }
